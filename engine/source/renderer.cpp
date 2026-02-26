@@ -11,7 +11,7 @@
 #include "models.h"
 #include "types.h"
 
-Renderer::Renderer() {
+Renderer::Renderer(int scale) : scale_(scale) {
     init_sdl();
     init_window();
 }
@@ -21,11 +21,8 @@ Renderer::~Renderer() {cleanup();}
 void Renderer::render(const System& sys) {
     SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
     SDL_RenderClear(renderer_);
-    std::vector<Circle> models;
     for (const auto& [obj,_] : sys) {
-        models.emplace_back(center_x + kScale * obj->p_.x_, center_y - kScale * obj->p_.y_, 10.f);
-    }
-    for (const auto& c : models) {
+        Circle c(center_.x_ + scale_ * obj->p_.x_, center_.y_ - scale_ * obj->p_.y_, 5 * scale_);
         SDL_RenderGeometry(renderer_, c.m_.texture_, c.m_.vertices_.data(), c.m_.vertices_.size(), c.m_.indices_.data(), c.m_.indices_.size());
     }
     SDL_RenderPresent(renderer_);
@@ -34,6 +31,9 @@ void Renderer::render(const System& sys) {
 void Renderer::init_window() {
         SDL_CreateWindowAndRenderer("DDX Engine", kW, kH, SDL_WINDOW_FULLSCREEN, &window_, &renderer_);
         SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED);
+        int w, h;
+        SDL_GetWindowSize(window_, &w, &h);
+        center_ = {w/2.f, h/2.f};
 }
 
 void Renderer::init_sdl() {

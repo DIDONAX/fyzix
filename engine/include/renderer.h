@@ -10,7 +10,7 @@
 
 class Renderer {
     public:
-        Renderer(); 
+        Renderer(int scale); 
 
         ~Renderer();
 
@@ -21,6 +21,8 @@ class Renderer {
     private:
         SDL_Window* window_;
         SDL_Renderer* renderer_;
+        int scale_;
+        vec2 center_;
 
         void init_window();
 

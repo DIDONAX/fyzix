@@ -9,7 +9,7 @@
 
 struct Ploter {
     public:
-        Ploter(); 
+        Ploter(int scale); 
 
         ~Ploter();
 
@@ -22,6 +22,7 @@ struct Ploter {
         SDL_Renderer* renderer_;
         SDL_Event event;
         SDL_FPoint center_;
+        int scale_;
         std::vector<Object> objects_;
 
         void plot_grid(); 

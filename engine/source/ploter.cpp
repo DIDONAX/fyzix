@@ -2,7 +2,7 @@
 
 
 
-Ploter::Ploter() : center_({padding, kH-padding}) {
+Ploter::Ploter(int scale) : center_({kH/2.f, kW/2.f}), scale_(scale) {
     init_sdl();
     init_window();
 }
@@ -35,12 +35,12 @@ void Ploter::plot_grid() {
     SDL_SetRenderDrawColor(renderer_, 60, 60, 60, 255);
 
     // vertical lines
-    for (int x = 0; x < kW; x += kScale) {
+    for (int x = 0; x < kW; x += scale_) {
         SDL_RenderLine(renderer_, x, 0, x, kH);
     }
 
     // horizontal lines
-    for (int y = 0; y < kH; y += kScale) {
+    for (int y = 0; y < kH; y += scale_) {
         SDL_RenderLine(renderer_, 0, y, kW, y);
     }
 
@@ -53,15 +53,15 @@ void Ploter::plot_grid() {
 
 void Ploter::plot(bool vec) {
     for (const auto& obj_ : objects_) {
-        float x0 = center_.x + kScale * obj_.p_.x_;
-        float y0 = center_.y - kScale * obj_.p_.y_;
+        float x0 = center_.x + scale_ * obj_.p_.x_;
+        float y0 = center_.y - scale_ * obj_.p_.y_;
 
         SDL_SetRenderDrawColor(renderer_, 255, 0, 0, 255);
         SDL_FRect r{x0, y0, 2, 2};
         SDL_RenderFillRect(renderer_, &r);
         if (vec) {
-            float vx1 = x0 + kScale * obj_.v_.x_;
-            float vy1 = y0 - kScale * obj_.v_.y_;
+            float vx1 = x0 + scale_ * obj_.v_.x_;
+            float vy1 = y0 - scale_ * obj_.v_.y_;
             SDL_SetRenderDrawColor(renderer_, 0, 255, 0, 255);
             SDL_RenderLine(renderer_, x0, y0 , vx1, vy1); 
         }
