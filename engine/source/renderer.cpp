@@ -22,6 +22,31 @@ void Renderer::render() const {
     SDL_RenderPresent(renderer_);
 }
 
+void Renderer::draw_grid() {
+    int w, h;
+    SDL_GetWindowSize(window_, &w, &h);
+
+    // light grid color
+    SDL_SetRenderDrawColor(renderer_, 60, 60, 60, 255);
+
+    // vertical lines
+    for (int left = center_.x_, right = center_.x_; right <= w; right += scale_, left-= scale_) {
+        SDL_RenderLine(renderer_, right, 0, right, h);
+        SDL_RenderLine(renderer_, left, 0, left, h);
+    }
+
+    // horizontal lines
+    for (int up = center_.y_, down = center_.y_; down <= h; down += scale_, up-= scale_) {
+        SDL_RenderLine(renderer_, 0, down, w, down);
+        SDL_RenderLine(renderer_, 0, up, w, up);
+    }
+
+    // axis in brighter color
+    SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+    SDL_RenderLine(renderer_, center_.x_, 0, center_.x_, h);
+    SDL_RenderLine(renderer_, 0, center_.y_, w, center_.y_);
+}
+
 void Renderer::draw(std::string& label, float x , float y, float scale) {
     SDL_SetRenderScale(renderer_, kTextScale * scale, kTextScale * scale);
     SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);

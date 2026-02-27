@@ -13,7 +13,8 @@ struct Renderer {
 
     ~Renderer();
 
-    void clear() const; 
+    void clear() const;
+    void draw_grid();
     void draw(RObject& o);
     void draw(std::string& label, float x , float y, float scale);
     void render() const; 

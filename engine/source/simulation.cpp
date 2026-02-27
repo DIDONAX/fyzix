@@ -1,5 +1,8 @@
 #include "simulation.h"
 #include "constants.h"
+#include "engine.h"
+#include "solver.h"
+#include "types.h"
 #include "utils.h"
 #include <print>
 
@@ -7,13 +10,23 @@ Simulation::Simulation(Engine& e, Renderer& r, std::string t) : engine_(&e), ren
 
 void Simulation::register_sys(RObject& o, Force& f) {
     engine_->register_sys(*o.obj_, f);
-    scene_.push_back(&o);
+
+    if (engine_->objs_.size() != scene_.size()) {
+        scene_.push_back(&o);
+    }
+}
+
+void Simulation::register_sys(RObject& o, Constraint& c) {
+    engine_->register_sys(*o.obj_, c);
+
+    if (engine_->objs_.size() != scene_.size()) {
+        scene_.push_back(&o);
+    }
 }
 
 void Simulation::start() {
     SDL_Event event;
     bool running = true;
-    // add perf counter
 
     while (running) {
         while (SDL_PollEvent(&event)) {
@@ -40,6 +53,7 @@ void Simulation::start() {
         for (const auto& o : scene_) {
             renderer_->draw(*o);
             renderer_->draw(title_, 10, 10, 2);
+            renderer_->draw_grid();
         }
         renderer_->render();
     }

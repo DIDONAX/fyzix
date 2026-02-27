@@ -14,6 +14,7 @@ struct Simulation {
     Simulation(Engine& e, Renderer& r, std::string t);
 
     void register_sys(RObject& o, Force& f); 
+    void register_sys(RObject& o, Constraint& c); 
 
     void start();
 };

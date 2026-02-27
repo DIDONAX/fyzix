@@ -13,6 +13,10 @@ struct Mass {
     vec2 p_;
     vec2 v_;
     vec2 a_;
+    vec2 prev_;
+
+    Mass(float m, const vec2& p, const vec2& v, const vec2& a)
+        : m_(m), p_(p), v_(v), a_(a), prev_(p) {}
 };
 
 struct RObject {

@@ -43,20 +43,24 @@ struct GravF {
  
 };
 
+struct Gravity {
+    Gravity(){}
+    ~Gravity(){}
+    void apply(Mass& obj) {
+        obj.a_.y_ -= 9.8f;;
+    };
+};
+
 struct SpringF {
     float k_;
     float b_;
-    vec2 eq_;
+    Mass* eq_;
 
-    SpringF(float k, float b, vec2 eq) : k_(k), b_(b), eq_(eq){}
+    SpringF(float k, float b, Mass& eq) : k_(k), b_(b), eq_(&eq){}
     ~SpringF(){}
 
-    void set_eq (vec2& eq) {
-        eq_ = eq;
-    }
-
     void apply(Mass& obj) {
-        obj.a_.x_ += (-k_ * (obj.p_.x_ - eq_.x_) - b_ * obj.v_.x_) / obj.m_;
-        obj.a_.y_ += (-k_ * (obj.p_.y_ - eq_.y_) - b_ * obj.v_.y_) / obj.m_; 
+        obj.a_.x_ += (-k_ * (obj.p_.x_ - eq_->p_.x_) - b_ * obj.v_.x_) / obj.m_;
+        obj.a_.y_ += (-k_ * (obj.p_.y_ - eq_->p_.y_) - b_ * obj.v_.y_) / obj.m_; 
     }
 }; 
