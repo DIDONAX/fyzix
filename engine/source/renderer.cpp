@@ -1,16 +1,10 @@
 #include "renderer.h"
 
 #include <print>
-#include <unordered_map>
-#include <vector>
-#include <algorithm>
-
 #include "SDL3/SDL_init.h"
-#include "SDL3/SDL_video.h"
 #include "constants.h"
-#include "models.h"
-#include "object.h"
-#include "types.h"
+#include "utils.h"
+
 
 Renderer::Renderer(int scale) : scale_(scale) {
     init_sdl();
@@ -28,20 +22,29 @@ void Renderer::render() const {
     SDL_RenderPresent(renderer_);
 }
 
-void Renderer::draw(RObject& ro) const {
-    vec2 pos = ro.obj_->p_; 
-    auto verts = ro.shape_.m_.vertices_;
 
-    for (auto& v : verts) {
-        float scaled_world_x = pos.x_ * scale_;
-        float scaled_world_y = pos.y_ * scale_;
+void Renderer::draw(RObject& ro) {
+    auto& indices =  ro.indices_;
+    auto& offs = ro.offsets_;
+    auto verts =  ro.verts_;
 
-        v.position.x = center_.x_ + scaled_world_x + v.position.x;
-        v.position.y = center_.y_ - (scaled_world_y + v.position.y);
+    vec2 p = ro.obj_->p_;
+    to_pixel(p, center_ , scale_);
+
+    float off = offs[2];
+ 
+    SDL_SetRenderScale(renderer_, kTextScale, kTextScale);
+    SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+    SDL_RenderDebugText(renderer_, p.x_/kTextScale, (p.y_ - off - 20)/kTextScale, ro.label_.data());
+    SDL_SetRenderScale(renderer_, 1.0f, 1.0f);
+
+
+    for (size_t i = 0; i < verts.size(); ++i) {
+        verts[i].position.x =  p.x_ + offs[2*i];
+        verts[i].position.y =  p.y_ + offs[2*i+1];
     }
 
-    auto& indices =  ro.shape_.m_.indices_;
-    SDL_RenderGeometry(renderer_, ro.shape_.m_.texture_, verts.data(), verts.size(), indices.data(), indices.size());
+    SDL_RenderGeometry(renderer_, nullptr, verts.data(), verts.size(), indices.data(), indices.size());
 }
 
 void Renderer::init_window() {

@@ -14,7 +14,7 @@ struct Renderer {
     ~Renderer();
 
     void clear() const; 
-    void draw(RObject& o) const;
+    void draw(RObject& o);
     void render() const; 
     SDL_Window* get_window() const;
     SDL_Renderer* data() const;

@@ -14,8 +14,10 @@ constexpr SDL_FColor kYellow {1.0f, 0.9f, 0.0f, 1.0f};
 constexpr SDL_FColor kBlue   {0.0f, 0.4f, 1.0f, 1.0f};
 constexpr SDL_FColor kOrange {1.0f, 0.4f, 0.0f, 1.0f};
 constexpr SDL_FColor kBrown  {0.6f, 0.4f, 0.2f, 1.0f};
-constexpr SDL_FColor kRed{255.0f, 0.0f, 0.0f, 1.0f};
-constexpr SDL_FColor kWhite{255,255,255,255};
+constexpr SDL_FColor kRed{1.0f, 0.0f, 0.0f, 1.0f};
+constexpr SDL_FColor kWhite{1.0f,1.0f,1.0f,1.0f};
+
+constexpr double kTextScale = 1.3;
 
 constexpr double pi = std::numbers::pi;
 constexpr float kG = 1.0f;  

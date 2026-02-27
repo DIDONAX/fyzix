@@ -4,7 +4,7 @@
 EulerSolver::EulerSolver(double dt, int n): dt_(dt), n_(n) {}
 EulerSolver::~EulerSolver(){}
 
-void EulerSolver::solve(Object* obj) {
+void EulerSolver::solve(Mass* obj) {
     for (int i = 0; i < n_; ++i) {
         // v(t + 0.5dt) = v(t) + 0.5 * a(t) * dt
         double v_half_x = obj->v_.x_ + 0.5 * obj->a_.x_ * dt_;

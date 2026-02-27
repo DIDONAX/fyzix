@@ -9,4 +9,4 @@
 
 using Force = std::optional<std::variant<GravF, DragF, SpringF>>;
 using Forces = std::vector<Force>;
-using System = std::unordered_map<Object*, Forces>;
+using System = std::unordered_map<Mass*, Forces>;

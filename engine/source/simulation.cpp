@@ -1,18 +1,19 @@
 #include "simulation.h"
+#include "constants.h"
+#include "utils.h"
 #include <print>
 
 Simulation::Simulation(Engine& e, Renderer& r) : engine_(&e), renderer_(&r) {}
 
 void Simulation::register_sys(RObject& o, Force& f) {
- 
     engine_->register_sys(*o.obj_, f);
-
     scene_.push_back(&o);
 }
 
 void Simulation::start() {
     SDL_Event event;
     bool running = true;
+    // add perf counter
 
     while (running) {
         while (SDL_PollEvent(&event)) {

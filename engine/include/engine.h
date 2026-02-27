@@ -11,8 +11,8 @@ struct Engine {
 
     Engine(EulerSolver& solver);
 
-    void register_sys(Object& o, Force& f); 
+    void register_sys(Mass& o, Force& f); 
     const System& get_sys() const;
-    void reset_a(Object& o) const ; 
+    void reset_a(Mass& o) const ; 
     void step(); 
 };

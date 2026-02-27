@@ -3,4 +3,4 @@
 #include "object.h"
 #include "constants.h"
 
-void to_cartesian(vec2& pos); 
+void to_pixel(vec2& pos, vec2& center, float scale); 

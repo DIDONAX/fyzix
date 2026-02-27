@@ -4,7 +4,7 @@
 
 Engine::Engine(EulerSolver& solver) : solver_(&solver){};
 
-void Engine::register_sys(Object& o, Force& f) {
+void Engine::register_sys(Mass& o, Force& f) {
     system_[&o].push_back(f);
 }
 

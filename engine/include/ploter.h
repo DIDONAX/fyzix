@@ -13,7 +13,7 @@ struct Ploter {
 
         ~Ploter();
 
-        void plot(const Object& obj); 
+        void plot(const Mass& obj); 
 
         void show(bool vec, bool grid);
 
@@ -23,7 +23,7 @@ struct Ploter {
         SDL_Event event;
         SDL_FPoint center_;
         int scale_;
-        std::vector<Object> objects_;
+        std::vector<Mass> objects_;
 
         void plot_grid(); 
         void plot(bool vec);

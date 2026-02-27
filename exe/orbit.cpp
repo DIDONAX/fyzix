@@ -6,32 +6,31 @@
 #include "solver.h"
 
 int main() {
-
     //smaller step size = more accurate simulation
-    float dt = 0.0009;
-    float n = 1;
-    int scale = 300;
+    float dt = 0.0008;
+    int n = 1;
+    int scale = 240;
 
     EulerSolver solver(dt, n); 
     Engine e(solver);
     Renderer r(scale);
 
     // G = 1, sun mass = 1
-    Object sun     {1.0f, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
-    Object mercury {0.0000033f, {0.39f, 0.0f}, {0.0f, 1.60f}, {0.0f, 0.0f}};
-    Object venus   {0.0000245f, {0.72f, 0.0f}, {0.0f, 1.18f}, {0.0f, 0.0f}};
-    Object earth   {0.00003f, {1.0f, 0.0f}, {0.0f, 1.00f}, {0.0f, 0.0f}};
-    Object mars    {0.0000032f, {1.52f, 0.0f}, {0.0f, 0.81f}, {0.0f, 0.0f}};
-    Object jupiter {0.000954f, {5.2f, 0.0f}, {0.0f, 0.44f}, {0.0f, 0.0f}}; // zoom out to see jupiter
+    Mass sun{1.0f, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
+    Mass mercury{0.0000033f, {0.39f, 0.0f}, {0.0f, 1.60f}, {0.0f, 0.0f}};
+    Mass venus{0.0000245f, {0.72f, 0.0f}, {0.0f, 1.18f}, {0.0f, 0.0f}};
+    Mass earth{0.00003f, {1.0f, 0.0f}, {0.0f, 1.00f}, {0.0f, 0.0f}};
+    Mass mars{0.0000032f, {1.52f, 0.0f}, {0.0f, 0.81f}, {0.0f, 0.0f}};
+    Mass jupiter{0.000954f, {5.2f, 0.0f}, {0.0f, 0.44f}, {0.0f, 0.0f}}; // zoom out to see jupiter
 
     // radiuses not accuarate
     std::vector<RObject> bodies = {
-        RObject(sun, kRed, 30.0),
-        RObject(mercury, kGray, 8.0),
-        RObject(venus, kYellow, 11.0),
-        RObject(earth, kBlue, 12.0),
-        RObject(mars, kOrange, 10.0),
-        RObject(jupiter, kBrown, 25.0)
+        RObject(sun, kRed, 30.0, "sun"),
+        RObject(mercury, kGray, 8.0, "mercury"),
+        RObject(venus, kYellow, 11.0, "venus"),
+        RObject(earth, kBlue, 12.0, "earth"),
+        RObject(mars, kOrange, 10.0, "mars"),
+        RObject(jupiter, kBrown, 25.0, "jupiter")
     };
 
     Simulation sim(e, r);

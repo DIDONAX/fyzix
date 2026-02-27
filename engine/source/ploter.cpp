@@ -9,7 +9,7 @@ Ploter::Ploter(int scale) : center_({kH/2.f, kW/2.f}), scale_(scale) {
 
 Ploter::~Ploter() {cleanup();}
 
-void Ploter::plot(const Object& obj) {
+void Ploter::plot(const Mass& obj) {
     objects_.push_back(obj);
 }
 

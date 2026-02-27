@@ -7,5 +7,5 @@ struct EulerSolver {
     int n_;
     EulerSolver(double dt, int n);
     ~EulerSolver();
-    void solve(Object* obj); 
+    void solve(Mass* obj); 
 };
