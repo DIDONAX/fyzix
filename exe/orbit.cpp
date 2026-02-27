@@ -33,7 +33,7 @@ int main() {
         RObject(jupiter, kBrown, 25.0, "jupiter")
     };
 
-    Simulation sim(e, r);
+    Simulation sim(e, r, "Solar System Demo");
     Force none = NullF;
     for (RObject& ro : bodies) {
         if (ro.obj_ == &sun) {

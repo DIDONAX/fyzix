@@ -22,6 +22,12 @@ void Renderer::render() const {
     SDL_RenderPresent(renderer_);
 }
 
+void Renderer::draw(std::string& label, float x , float y, float scale) {
+    SDL_SetRenderScale(renderer_, kTextScale * scale, kTextScale * scale);
+    SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+    SDL_RenderDebugText(renderer_,  x/kTextScale, y/kTextScale, label.data());
+    SDL_SetRenderScale(renderer_, 1.0f, 1.0f);
+}
 
 void Renderer::draw(RObject& ro) {
     auto& indices =  ro.indices_;
@@ -32,12 +38,9 @@ void Renderer::draw(RObject& ro) {
     to_pixel(p, center_ , scale_);
 
     float off = offs[2];
- 
-    SDL_SetRenderScale(renderer_, kTextScale, kTextScale);
-    SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
-    SDL_RenderDebugText(renderer_, p.x_/kTextScale, (p.y_ - off - 20)/kTextScale, ro.label_.data());
-    SDL_SetRenderScale(renderer_, 1.0f, 1.0f);
+    float txt_y =  p.y_ - off - 20;
 
+    draw(ro.label_, p.x_, txt_y, 1);
 
     for (size_t i = 0; i < verts.size(); ++i) {
         verts[i].position.x =  p.x_ + offs[2*i];

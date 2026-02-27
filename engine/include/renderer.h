@@ -15,6 +15,7 @@ struct Renderer {
 
     void clear() const; 
     void draw(RObject& o);
+    void draw(std::string& label, float x , float y, float scale);
     void render() const; 
     SDL_Window* get_window() const;
     SDL_Renderer* data() const;

@@ -3,7 +3,7 @@
 #include "utils.h"
 #include <print>
 
-Simulation::Simulation(Engine& e, Renderer& r) : engine_(&e), renderer_(&r) {}
+Simulation::Simulation(Engine& e, Renderer& r, std::string t) : engine_(&e), renderer_(&r), title_(t) {}
 
 void Simulation::register_sys(RObject& o, Force& f) {
     engine_->register_sys(*o.obj_, f);
@@ -39,6 +39,7 @@ void Simulation::start() {
         renderer_->clear();
         for (const auto& o : scene_) {
             renderer_->draw(*o);
+            renderer_->draw(title_, 10, 10, 2);
         }
         renderer_->render();
     }
