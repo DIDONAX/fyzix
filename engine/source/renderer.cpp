@@ -3,6 +3,8 @@
 #include <print>
 #include "SDL3/SDL_init.h"
 #include "constants.h"
+#include "constraint.h"
+#include "forces.h"
 #include "utils.h"
 
 
@@ -53,6 +55,41 @@ void Renderer::draw(std::string& label, float x , float y, float scale) {
     SDL_RenderDebugText(renderer_,  x/kTextScale, y/kTextScale, label.data());
     SDL_SetRenderScale(renderer_, 1.0f, 1.0f);
 }
+
+void Renderer::draw(const RObject& o, const Constraint& c) {
+    vec2 p1 = o.obj_->p_;
+    to_pixel(p1, center_ , scale_);
+
+    if (c.has_value()) {
+        std::visit([&](auto& c) {
+            using T = std::decay_t<decltype(c)>;
+            if constexpr (std::is_same_v<T, DistanceC>) {
+                vec2 p2 = c.p_->p_;
+                to_pixel(p2, center_ , scale_);
+                SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+                SDL_RenderLine(renderer_, p1.x_, p1.y_, p2.x_, p2.y_);
+            }
+        }, *c);
+    }
+}
+
+void Renderer::draw(const RObject& o, const Force& f) {
+    vec2 p1 = o.obj_->p_;
+    to_pixel(p1, center_ , scale_);
+
+    if (f.has_value()) {
+        std::visit([&](auto& f) {
+            using T = std::decay_t<decltype(f)>;
+            if constexpr (std::is_same_v<T, SpringF>) {
+                vec2 p2 = f.eq_->p_;
+                to_pixel(p2, center_ , scale_);
+                SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+                SDL_RenderLine(renderer_, p1.x_, p1.y_, p2.x_, p2.y_);
+            }
+        }, *f);
+    }
+}
+
 
 void Renderer::draw(RObject& ro) {
     auto& indices =  ro.indices_;

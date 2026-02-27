@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <optional>
+#include <print>
 #include "constants.h"
 #include "object.h"
 

@@ -8,22 +8,6 @@
 
 Simulation::Simulation(Engine& e, Renderer& r, std::string t) : engine_(&e), renderer_(&r), title_(t) {}
 
-void Simulation::register_sys(RObject& o, Force& f) {
-    engine_->register_sys(*o.obj_, f);
-
-    if (engine_->objs_.size() != scene_.size()) {
-        scene_.push_back(&o);
-    }
-}
-
-void Simulation::register_sys(RObject& o, Constraint& c) {
-    engine_->register_sys(*o.obj_, c);
-
-    if (engine_->objs_.size() != scene_.size()) {
-        scene_.push_back(&o);
-    }
-}
-
 void Simulation::start() {
     SDL_Event event;
     bool running = true;
@@ -44,16 +28,24 @@ void Simulation::start() {
                 break;
                 default:
                     break;
-            } 
+            }
         }
 
         engine_->step();
 
         renderer_->clear();
         for (const auto& o : scene_) {
-            renderer_->draw(*o);
             renderer_->draw(title_, 10, 10, 2);
             renderer_->draw_grid();
+
+            for (const auto& c : engine_->systemc_.at(o->obj_)) {
+                renderer_->draw(*o, c);
+            }
+
+            for (const auto& f : engine_->systemf_.at(o->obj_)) {
+                renderer_->draw(*o, f);
+            }
+            renderer_->draw(*o);
         }
         renderer_->render();
     }

@@ -14,8 +14,24 @@ struct Engine {
 
     Engine(EulerSolver& solver);
 
-    void register_sys(Mass& o,Constraint& c); 
-    void register_sys(Mass& o, Force&); 
+    template<typename T>
+    void register_sys(Mass& o, T&& sys) {
+        using U = std::decay_t<T>;
+
+        bool not_registered = !systemf_.contains(&o) && !systemc_.contains(&o);
+
+        if constexpr (std::is_same_v<U, Force>) {
+            systemf_[&o].push_back(std::forward<T>(sys));
+        }
+        else if constexpr (std::is_same_v<U, Constraint>) {
+            systemc_[&o].push_back(std::forward<T>(sys));
+        }
+
+        if (not_registered) {
+            objs_.push_back(&o);
+        }
+    }
+
     const SystemF& get_sysf() const;
     const SystemC& get_sysc() const;
     void step(); 

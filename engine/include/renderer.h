@@ -15,6 +15,8 @@ struct Renderer {
 
     void clear() const;
     void draw_grid();
+    void draw(const RObject& o, const Constraint& c);
+    void draw(const RObject& o, const Force& c);
     void draw(RObject& o);
     void draw(std::string& label, float x , float y, float scale);
     void render() const; 
