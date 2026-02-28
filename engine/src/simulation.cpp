@@ -34,10 +34,9 @@ void Simulation::start() {
         engine_->step();
 
         renderer_->clear();
+        renderer_->draw(title_, 10, 10, 2);
+        renderer_->draw_grid();
         for (const auto& o : scene_) {
-            renderer_->draw(title_, 10, 10, 2);
-            renderer_->draw_grid();
-
             for (const auto& c : engine_->systemc_.at(o->obj_)) {
                 renderer_->draw(*o, c);
             }
@@ -47,6 +46,6 @@ void Simulation::start() {
             }
             renderer_->draw(*o);
         }
-        renderer_->render();
+        renderer_->display();
     }
 }
