@@ -10,9 +10,11 @@ void DistanceC::apply(Mass& m) {
     float len = std::sqrt(dir.x_ * dir.x_ + dir.y_ * dir.y_);
     if (len == 0.0f) return;
 
-    float diff = len - dist_;
-    float factor = diff / len; 
+    dir.x_ *= 1.0f/len;
+    dir.y_ *= 1.0f/len;
 
-    m.p_.x_ -= dir.x_ * factor;
-    m.p_.y_ -= dir.y_ * factor;
+    float lambda = dist_ - len;
+
+    m.p_.x_ -= dir.x_ * lambda;
+    m.p_.y_ -= dir.y_ * lambda;
 }

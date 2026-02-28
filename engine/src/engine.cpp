@@ -30,11 +30,10 @@ void Engine::step() {
                 std::visit([&](auto& c) {
                     c.apply(*o);
                 }, *constraint);
+
+                o->v_.x_= (o->p_.x_ - o->prev_.x_)/solver_->dt_;
+                o->v_.y_= (o->p_.y_ - o->prev_.y_)/solver_->dt_;
             }
         }
-
-        //unstable
-        // o->v_.x_= (o->p_.x_ - o->prev_.x_)/solver_->dt_;
-        // o->v_.y_= (o->p_.y_ - o->prev_.y_)/solver_->dt_;
     }
 }
