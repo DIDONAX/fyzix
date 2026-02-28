@@ -20,7 +20,7 @@ void Renderer::clear() const {
     SDL_RenderClear(renderer_);
 }
 
-void Renderer::render() const {
+void Renderer::display() const {
     SDL_RenderPresent(renderer_);
 }
 
@@ -75,21 +75,46 @@ void Renderer::draw(const RObject& o, const Constraint& c) {
 
 void Renderer::draw(const RObject& o, const Force& f) {
     vec2 p1 = o.obj_->p_;
-    to_pixel(p1, center_ , scale_);
+    to_pixel(p1, center_, scale_);
 
-    if (f.has_value()) {
-        std::visit([&](auto& f) {
-            using T = std::decay_t<decltype(f)>;
-            if constexpr (std::is_same_v<T, SpringF>) {
-                vec2 p2 = f.eq_->p_;
-                to_pixel(p2, center_ , scale_);
-                SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
-                SDL_RenderLine(renderer_, p1.x_, p1.y_, p2.x_, p2.y_);
+    if (!f.has_value()) return;
+
+    std::visit([&](auto& f) {
+        using T = std::decay_t<decltype(f)>;
+        if constexpr (std::is_same_v<T, SpringF>) {
+            vec2 p2 = f.eq_->p_;
+            to_pixel(p2, center_, scale_);
+
+            vec2 dir = { p2.x_ - p1.x_, p2.y_ - p1.y_ };
+            float len = std::sqrt(dir.x_ * dir.x_ + dir.y_ * dir.y_);
+            if (len == 0.0f) return;
+
+            dir.x_ /= len;
+            dir.y_ /= len;
+
+            vec2 normal = { -dir.y_, dir.x_ };
+
+            const int points = 40;
+            const float amp = 6.0f;
+
+            SDL_SetRenderDrawColor(renderer_, 255, 255, 255, 255);
+
+            vec2 prev = p1;
+            for (int i = 1; i <= points; ++i) {
+                float t = float(i) / points;
+
+                float sin = std::sin(t * 2.0f * M_PI * 6); // 6 coils
+                vec2 offset = { normal.x_ * sin * amp, normal.y_ * sin * amp };
+                vec2 current = { p1.x_ + dir.x_ * len * t + offset.x_,
+                                 p1.y_ + dir.y_ * len * t + offset.y_ };
+                SDL_RenderLine(renderer_, prev.x_, prev.y_, current.x_, current.y_);
+                prev = current;
             }
-        }, *f);
-    }
-}
 
+            SDL_RenderLine(renderer_, prev.x_, prev.y_, p2.x_, p2.y_);
+        }
+    }, *f);
+}
 
 void Renderer::draw(RObject& ro) {
     auto& indices =  ro.indices_;

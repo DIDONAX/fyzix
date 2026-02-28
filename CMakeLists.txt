@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SDL_AUDIO OFF CACHE BOOL "" FORCE)
 set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)
 set(SDL_JOYSTICK OFF CACHE BOOL "" FORCE)
-file(GLOB SOURCES engine/source/*.cpp)
+file(GLOB SOURCES engine/src/*.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
