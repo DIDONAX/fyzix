@@ -7,7 +7,7 @@
 
 int main() {
     //smaller step size = more accurate simulation
-    float dt = 0.0009;
+    double dt = 0.00008;
     int n = 1;
     int scale = 300;
 

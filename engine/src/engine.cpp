@@ -1,6 +1,5 @@
 #include "engine.h"
 #include "constraint.h"
-#include <print>
 
 Engine::Engine(EulerSolver& solver) : solver_(&solver){};
 
@@ -22,7 +21,6 @@ void Engine::step() {
             }
         }
 
-        o->prev_ = o->p_;
         solver_->solve(o);
 
         for (Constraint& constraint : systemc_[o]) {
@@ -30,10 +28,10 @@ void Engine::step() {
                 std::visit([&](auto& c) {
                     c.apply(*o);
                 }, *constraint);
-
-                o->v_.x_= (o->p_.x_ - o->prev_.x_)/solver_->dt_;
-                o->v_.y_= (o->p_.y_ - o->prev_.y_)/solver_->dt_;
             }
         }
+
+        o->v_.x_= (o->p_.x_ - o->prev_.x_)/solver_->dt_;
+        o->v_.y_= (o->p_.y_ - o->prev_.y_)/solver_->dt_;
     }
 }

@@ -29,6 +29,8 @@ struct Engine {
 
         if (not_registered) {
             objs_.push_back(&o);
+            o.prev_.x_ = o.p_.x_ - o.v_.x_ * solver_->dt_;
+            o.prev_.y_ = o.p_.y_ - o.v_.y_ * solver_->dt_;
         }
     }
 

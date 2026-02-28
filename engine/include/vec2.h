@@ -1,5 +1,5 @@
 #pragma once
 
 struct vec2 {
-    float x_, y_;
+    double x_, y_;
 };

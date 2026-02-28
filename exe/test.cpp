@@ -9,43 +9,42 @@
 #include <print>
 
 int main() {
-    float dt = 0.008;
+    float dt = 0.008f;
     int n = 1;
     int scale = 50;
 
     EulerSolver solver(dt, n); 
     Engine e(solver);
     Renderer r(scale);
-    Simulation sim(e, r, "Constraints Test");
+    Simulation sim(e, r, "Double Pendulum Demo");
 
-    Mass m1(1, {0, 5}, {5,0}, {0,0});
-    Mass m2(2, {0, 0}, {0,0}, {0,0});
-    Mass a(1, {0, 7}, {0,0}, {0,0});
+    // create masses
+    Mass anchor_mass(1, {0, 5}, {0,0}, {0,0});
+    Mass m1(1, {0, 3}, {4,0}, {0,0});
+    Mass m2(1, {0, 1}, {-3,0}, {0,0});
 
-    RObject anchor(a, kWhite, 10);
+    // wrap in RObjects
+    RObject anchor(anchor_mass, kWhite, 10);
     RObject mass1(m1, kBlue, 10);
     RObject mass2(m2, kRed, 10);
 
-    Constraint constraint_to_anchor = DistanceC(a, 5);
-    Constraint constraint_to_mass = DistanceC(m1, 5);
-
+    // forces
     Force nonef = NullF;
     Force g = Gravity();
-    Force s = SpringF(7, 1, m1);
 
-    // register anchor
+    // constraints
+    Constraint c1 = DistanceC(anchor_mass, 4); // anchor <- mass1
+    Constraint c2 = DistanceC(m1, 5); // mass1 <- mass2
+
+    // register systems
     sim.register_sys(anchor, nonef);
- 
-    //register mass1
+
     sim.register_sys(mass1, g);
-    sim.register_sys(mass1, constraint_to_anchor);
+    sim.register_sys(mass1, c1);
 
-    //register mass2
     sim.register_sys(mass2, g);
-    sim.register_sys(mass2, s);
-
+    sim.register_sys(mass2, c2);
 
     sim.start();
- 
     return 0;
 }
