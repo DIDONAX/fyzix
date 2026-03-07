@@ -22,12 +22,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL3)
 
 #DEMO
-add_executable(orbit exe/orbit.cpp ${SOURCES})
 add_executable(test exe/test.cpp ${SOURCES})
 
 include_directories(engine/include)
 
-target_link_libraries(orbit PRIVATE SDL3::SDL3)
 target_link_libraries(test PRIVATE SDL3::SDL3)
 
 #BENCHMARK
