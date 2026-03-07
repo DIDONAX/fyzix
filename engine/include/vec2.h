@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+
 namespace fyzix  {
 
 struct vec2 {
@@ -31,12 +32,12 @@ struct vec2 {
         y_ -= other.y_;
     }
 
-    float length() const {return std::sqrt(x_*x_+ y_*y_);}
+    float magnitude() const {return std::sqrt(x_*x_+ y_*y_);}
 
     void invert() {(*this)*= -1;}
 
     void normalize() {
-        float l = length();
+        float l = magnitude();
         if (l == 0) return;
         (*this)*= (1/l);
     }

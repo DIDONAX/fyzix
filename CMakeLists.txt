@@ -6,41 +6,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(SDL_AUDIO OFF CACHE BOOL "" FORCE)
-set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)
-set(SDL_JOYSTICK OFF CACHE BOOL "" FORCE)
 file(GLOB SOURCES engine/src/*.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
-    SDL3
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG main
-    SOURCE_DIR deps/SDL3
+    SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 3.0.2
+    GIT_SHALLOW ON
+    EXCLUDE_FROM_ALL
+    SOURCE_DIR _deps/SFML
 )
 
-FetchContent_MakeAvailable(SDL3)
+FetchContent_MakeAvailable(SFML)
 
 #DEMO
 add_executable(test exe/test.cpp ${SOURCES})
 
 include_directories(engine/include)
 
-target_link_libraries(test PRIVATE SDL3::SDL3)
-
-#BENCHMARK
-# set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
-# FetchContent_Declare(
-#     google_benchmark 
-#     GIT_REPOSITORY https://github.com/google/benchmark.git 
-#     GIT_TAG main
-#     SOURCE_DIR deps/google
-# )
-# FetchContent_MakeAvailable(google_benchmark)
-#
-# add_executable(bench benchmark/bench.cpp ${SOURCES})
-# target_link_libraries(bench PRIVATE SDL3::SDL3 benchmark::benchmark)
-#
-#
-
-
+target_link_libraries(test PRIVATE SFML::Graphics)
