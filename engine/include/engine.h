@@ -15,7 +15,7 @@ namespace fyzix::engine {
     inline void step(particle& p, const float dt) {
         float step = dt/5;
         for (int i = 0; i < 5; ++i) {
-            p.apply_force({0, -10});
+            // todo: apply forces
             integrate(p, step);
             p.clear_forces();
         }
