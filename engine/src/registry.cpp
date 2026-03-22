@@ -12,7 +12,7 @@ void registry::add(particle* p, force_generator* fg) {
     data_.emplace_back(p,fg); 
 }
 
-void registry::clear(){
+void registry::clear() {
     data_.clear();
 }
 

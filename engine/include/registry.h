@@ -2,6 +2,7 @@
 
 #include "force_gen.h"
 #include <vector>
+
 namespace fyzix {
 
 struct registry {

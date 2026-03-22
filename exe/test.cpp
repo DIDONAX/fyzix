@@ -1,19 +1,27 @@
-#include "SFML/Graphics/Color.hpp"
 #include "engine.h"
 #include "particle.h"
-#include <SFML/Graphics.hpp>
 #include <random>
+#include "SFML/Graphics/CircleShape.hpp"
+#include "SFML/Graphics/Font.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/Text.hpp"
 
-int main() {
-    //init window
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "fyzix editor", sf::State::Fullscreen);
+void setup_view(sf::RenderWindow& window) {
     auto [width, height] = window.getSize();
  
-    // cartesian view
     sf::View view;
     view.setCenter({0.f, 0.f});
     view.setSize({static_cast<float>(width), -static_cast<float>(height)});
     window.setView(view); 
+}
+
+
+int main() {
+    //init window
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "fyzix editor", sf::State::Fullscreen);
+    setup_view(window);
+
+    auto [width, height] = window.getSize();
 
     //init shapes
     sf::CircleShape particle(2.f);
@@ -27,9 +35,9 @@ int main() {
     fps.setCharacterSize(20);
     fps.setScale({1,-1});
 
-    fyzix::particle* shots = new fyzix::particle[100];
+    fyzix::particle* shots = new fyzix::particle[1000];
 
-    for (fyzix::particle* shot = shots; shot < shots + 100; ++shot) {
+    for (fyzix::particle* shot = shots; shot < shots + 1000; ++shot) {
         shot->position_ = { 
             static_cast<float>(std::rand() % (width + 1) - width/2.f), 
             static_cast<float>(std::rand() % (height + 1) - height/2.f)
@@ -47,13 +55,14 @@ int main() {
         float f = 1.f / dt;
 
         while (const std::optional event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>())
+            if (event->is<sf::Event::Closed>()) {
                 window.close();
+            }
         }
 
         window.clear(sf::Color::Black);
  
-        for (fyzix::particle* shot = shots; shot < shots+100; ++shot) {
+        for (fyzix::particle* shot = shots; shot < shots+1000; ++shot) {
             fyzix::engine::step(*shot, 0.0003);
             particle.setPosition({shot->position_.x_, shot->position_.y_});
             window.draw(particle);
@@ -62,7 +71,6 @@ int main() {
 
         fps.setString(std::format("fps: {}", f));
         window.draw(fps);
-
         window.display();
     }
     return 0;
