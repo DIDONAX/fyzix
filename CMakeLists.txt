@@ -20,9 +20,10 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
+# fyzix_lib
+add_library(fyzix ${SOURCES})
+include_directories(fyzix engine/include)
+
 #DEMO
-add_executable(test exe/test.cpp ${SOURCES})
-
-include_directories(engine/include)
-
-target_link_libraries(test PRIVATE SFML::Graphics)
+add_executable(test exe/test.cpp)
+target_link_libraries(test PRIVATE SFML::Graphics fyzix)
